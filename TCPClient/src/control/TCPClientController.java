@@ -24,6 +24,7 @@ public class TCPClientController {
 		} 
 	}
 	
+	// Connects to server
 	public void connectToServer() throws IOException, NoRouteToHostException, ConnectException, NoInputException {
 		String IP = UI.getIP();
 		if (IP.isEmpty())
@@ -36,14 +37,17 @@ public class TCPClientController {
 				new BufferedReader(new
 						InputStreamReader(clientSocket.getInputStream())); 
 	}
-	public void checkMenuInput(String message) throws IOException, InterruptedException {
+	
+	// Exceptionhandling on userinput in the main menu (runMenu())
+	public void checkMenuInput() throws IOException, InterruptedException {
 		try{	
-			runMenu(message);
+			runMenu();
 		} catch (WrongInputException e) {
-			checkMenuInput(message);
+			checkMenuInput();
 		}
 	}
-
+	
+	// Exceptionhandling on creation of connection to server
 	public void checkConnection() throws IOException {
 		try {
 			connectToServer();
@@ -61,9 +65,9 @@ public class TCPClientController {
 			checkConnection();
 		}
 	}
-
-	public void runMenu(String message) throws IOException, WrongInputException, InterruptedException {
-		int option = UI.getMenuOption(message);
+	// Controls the user input, and executes the following funktions, matching the input command
+	public void runMenu() throws IOException, WrongInputException, InterruptedException {
+		int option = UI.getMenuOption();
 		switch (option) {
 		case 0: 	int input = getMessageInput();
 					String usermessage1 = UI.getUserMessage(1);
@@ -84,7 +88,6 @@ public class TCPClientController {
 					clientSocket.close(); 
 					break;
 		case 5: 	outToServer.writeBytes("S"+'\r'+'\n');	
-					showWeight=true;
 					break;
 		case 6: 
 					outToServer.writeBytes("DW"+'\r'+'\n');	
@@ -92,14 +95,17 @@ public class TCPClientController {
 		default:	throw new WrongInputException("Ukendt Input"); 
 		}
 	}
+	
+	// Runs client after connection is found
 	public void runClient() throws IOException, InterruptedException{
-		String message = "Velkommen til vægt 10000 v800.67";
+		System.out.println("Velkommen til vægt 10000 v800.67");
 		while(run) {
-			checkMenuInput(message);
+			checkMenuInput();
 			if (run) {
 				UI.showMessage(inFromServer.readLine());
 					if (extrainput) {
 						UI.showMessage("Please wait");
+							// checks for server input every second
 							while(vent){
 								Thread.sleep(1000);
 								String answer = inFromServer.readLine();
@@ -110,12 +116,9 @@ public class TCPClientController {
 							}	
 					}
 			}
-			if (showWeight) {
-				UI.showWeight(message);
-				showWeight=false;
-			}
 		}
 	}
+	// controls if message is Integer or Alfanum
 	public int getMessageInput() throws IOException {
 		try {
 		String input = UI.getMessageOption();
@@ -131,9 +134,6 @@ public class TCPClientController {
 			getMessageInput();
 		}
 		return -1;
-	}
-	public void controlMessageInput() {
-		
 	}
 }
 

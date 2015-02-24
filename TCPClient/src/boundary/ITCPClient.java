@@ -18,9 +18,7 @@ public interface ITCPClient {
 	
 	void showQuitMessage() throws IOException;
 
-	int getMenuOption(String message) throws IOException;
-	
-	void showWeight(String message) throws IOException;
+	int getMenuOption() throws IOException;
 	
 	void connectionError();
 	

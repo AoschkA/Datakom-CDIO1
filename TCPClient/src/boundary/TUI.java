@@ -57,8 +57,10 @@ public class TUI implements ITCPClient{
 		System.out.println("Du forlod serveren");
 	}
 	@Override
-	public int getMenuOption(String message) throws IOException{
-		System.out.println("input fra serveren: "+message+"\n");
+	public int getMenuOption() throws IOException{
+		System.out.println("#########################");
+		System.out.println("Hovedmenu");
+		System.out.println("#########################");
 		System.out.println("Serverens kommandoer: \n"+"D: Skift displaytekst \n"+"AD: Aflæs Display \n"+"T: Tarere vægt \n"+
 		"A: Aflæs vægt \n"+"Z: Nulstil vægt \n"+"M: Besked til vægtserveren \n"+"Q: Forlad program \n");
 		String input = inFromUser.readLine();
@@ -73,11 +75,6 @@ public class TUI implements ITCPClient{
 		default: System.out.println("Den indtastede funktion findes ikke");
 					return -1;
 		}
-	}
-
-	@Override
-	public void showWeight(String message) throws IOException {
-		System.out.println("Vægten viser: "+message);
 	}
 	
 	public void connectionError() {
