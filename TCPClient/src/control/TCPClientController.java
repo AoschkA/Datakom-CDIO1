@@ -11,7 +11,7 @@ public class TCPClientController {
 	DataOutputStream outToServer;
 	BufferedReader inFromServer;
 	TUI UI;
-	boolean run=true, showWeight=false, extrainput=false; 
+	boolean run=true, showWeight=false, extrainput=false,vent=true; 
 
 	public void init() throws IOException, Exception {
 		createUI("TUI");
@@ -100,9 +100,14 @@ public class TCPClientController {
 				UI.showMessage(inFromServer.readLine());
 					if (extrainput) {
 						UI.showMessage("Please wait");
-						Thread.sleep(10000);
-						UI.showMessage(inFromServer.readLine());
-						
+							while(vent){
+								Thread.sleep(1000);
+								String answer = inFromServer.readLine();
+									if(!answer.equals(null)){
+										UI.showMessage(answer);
+										break;
+									}
+							}	
 					}
 			}
 			if (showWeight) {
