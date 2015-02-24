@@ -69,7 +69,7 @@ public class TCPClientController {
 					String usermessage1 = UI.getUserMessage(1);
 					String usermessage2 = UI.getUserMessage(2);
 					String usermessage3 = UI.getUserMessage(3);
-					outToServer.writeBytes("RM20 "+input+" "+'"'+usermessage1+'"'+'"'+usermessage2+'"'+'"'+usermessage3+'"');
+					outToServer.writeBytes("RM20 "+input+" "+"\""+usermessage1+"\""+"\""+usermessage2+"\""+"\""+usermessage3+"\"");
 			
 		case 1: 	outToServer.writeBytes("Z"+ '\r'+'\n');		
 					break;
