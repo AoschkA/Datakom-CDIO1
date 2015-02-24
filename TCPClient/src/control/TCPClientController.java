@@ -11,7 +11,7 @@ public class TCPClientController {
 	DataOutputStream outToServer;
 	BufferedReader inFromServer;
 	TUI UI;
-	boolean run=true, showWeight=false; 
+	boolean run=true, showWeight=false, extrainput=false; 
 
 	public void init() throws IOException, Exception {
 		createUI("TUI");
@@ -69,8 +69,9 @@ public class TCPClientController {
 					String usermessage1 = UI.getUserMessage(1);
 					String usermessage2 = UI.getUserMessage(2);
 					String usermessage3 = UI.getUserMessage(3);
-					outToServer.writeBytes("RM20 "+input+" "+"\""+usermessage1+"\""+"\""+usermessage2+"\""+"\""+usermessage3+"\"");
-			
+					outToServer.writeBytes("RM20 "+input+" "+"\""+usermessage1+"\""+"\""+usermessage2+"\""+"\""+usermessage3+"\""+'\r'+'\n');
+					extrainput=true;
+					break;
 		case 1: 	outToServer.writeBytes("Z"+ '\r'+'\n');		
 					break;
 		case 2: 	outToServer.writeBytes("T"+ '\r'+'\n');
@@ -96,7 +97,13 @@ public class TCPClientController {
 		while(run) {
 			checkMenuInput(message);
 			if (run) {
-				message = inFromServer.readLine();
+				UI.showMessage(inFromServer.readLine());
+					if (extrainput) {
+						UI.showMessage("Please wait");
+						Thread.sleep(10000);
+						UI.showMessage(inFromServer.readLine());
+						
+					}
 			}
 			if (showWeight) {
 				UI.showWeight(message);
